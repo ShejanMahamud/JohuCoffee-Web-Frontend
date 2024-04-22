@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+:root {
+  --swiper-theme-color: #e3b577;
+}
+.swiper-pagination-bullet-active {
+  background-color: white !important;
+}
