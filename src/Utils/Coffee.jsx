@@ -22,7 +22,7 @@ const handleDelete = (id) => {
     confirmButtonText: "Yes, delete it!"
   }).then((result) => {
     if (result.isConfirmed) {
-      fetch(`http://localhost:5000/coffees/${id}`,{
+      fetch(`https://johu-coffee-backend.vercel.app/coffees/${id}`,{
         method: 'DELETE'
       })
       .then(res => res.json())
@@ -42,19 +42,19 @@ const handleDelete = (id) => {
 }
 
   return (
-    <div className="w-full h-[300px] flex items-center justify-between gap-5 bg-[#F5F4F1] py-3 rounded-md font-raleway">
+    <div className="w-full lg:h-[300px] h-auto flex lg:flex-row flex-col items-center justify-between gap-5 bg-[#D2B48C4d] py-3 rounded-md font-raleway">
             <img
               src={coffee_photo}
               alt="coffee.png"
               className="w-48 object-cover"
             />
-            <div className="w-full flex items-center gap-8 px-10">
+            <div className="w-full flex items-center gap-8 px-10 lg:flex-row flex-col">
               <div className="flex items-start flex-col gap-3">
                 <h1 className="text-[#1B1A1A] font-bold">Name: <span className="text-[#5C5B5B]   font-normal">{coffee_name}</span></h1>
                 <h1 className="text-[#1B1A1A] font-bold">Cheef: <span className="text-[#5C5B5B]   font-normal">{coffee_chef}</span></h1>
                 <h1 className="text-[#1B1A1A] font-bold">Price: <span className="text-[#5C5B5B]   font-normal">{coffee_price}</span></h1>
               </div>
-              <div className="flex flex-col items-center gap-3">
+              <div className="flex lg:flex-col items-center gap-3 flex-row">
                 <button onClick={()=>{
                   window.scroll(0,0)
                   setTimeout(()=>{

@@ -38,7 +38,7 @@ const navigate = useNavigate();
             </svg>
           </button>
         </div>
-        <div className="w-[90%] mx-auto grid grid-cols-2 row-auto items-center gap-10 my-20">
+        <div className="w-[90%] mx-auto grid lg:grid-cols-2 grid-cols-1 row-auto items-center gap-10 my-20">
           {
            coffees.length > 0 ? coffees.map(coffee => <Coffee key={coffee._id} coffee={coffee} />) : <h1 className="text-[#331A15] font-rancho text-3xl my-20 text-center mb-5 col-span-2">
            No Coffee Found!

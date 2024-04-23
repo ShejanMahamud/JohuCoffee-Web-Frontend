@@ -2,9 +2,10 @@ import axios from "axios";
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import {
-  createBrowserRouter,
   RouterProvider,
+  createBrowserRouter,
 } from "react-router-dom";
+import Root from "./Root";
 import "./index.css";
 import Add from "./pages/Add";
 import Details from './pages/Details';
@@ -13,8 +14,7 @@ import Home from './pages/Home';
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Update from './pages/Update';
-import Root from "./Root";
-
+import AuthProvider from "./providers/AuthProvider";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        loader: ()=> axios.get('http://localhost:5000/coffees'),
+        loader: ()=> axios.get('https://johu-coffee-backend.vercel.app/coffees'),
         element: <Home></Home>
       },
       {
@@ -31,12 +31,12 @@ const router = createBrowserRouter([
       },
       {
         path: '/update/:id',
-        loader: ({params})=> axios.get(`http://localhost:5000/coffees/${params.id}`),
+        loader: ({params})=> axios.get(`https://johu-coffee-backend.vercel.app/coffees/${params.id}`),
         element: <Update></Update>
       },
       {
         path: '/coffee/:id',
-        loader: ({params}) => axios.get(`http://localhost:5000/coffees/${params.id}`),
+        loader: ({params}) => axios.get(`https://johu-coffee-backend.vercel.app/coffees/${params.id}`),
         element: <Details></Details>
       },
       {
@@ -46,7 +46,7 @@ const router = createBrowserRouter([
       {
         path: '/register',
         element: <Register></Register>
-      }
+      },
     ],
     errorElement: <Error></Error>
   },
@@ -54,6 +54,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
+
+    <AuthProvider>
     <RouterProvider router={router} />
+    </AuthProvider>
+
   </React.StrictMode>
 );

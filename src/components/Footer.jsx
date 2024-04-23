@@ -5,7 +5,7 @@ import { FaSquareXTwitter } from "react-icons/fa6";
 const Footer = () => {
   return (
     <>
-    <div className="w-full bg-[url('https://i.postimg.cc/dtKPqrbT/footer-bg.jpg')] py-5 px-40 grid grid-cols-2 row-auto items-center justify-items-center gap-10">
+    <div className="w-full bg-[url('https://i.postimg.cc/dtKPqrbT/footer-bg.jpg')] py-5 lg:px-40 px-10 grid grid-cols-2 row-auto items-center justify-items-center gap-10">
       <div className='w-full flex flex-col items-start justify-center gap-1 py-2'>
           <img src="https://i.postimg.cc/g2D01RLY/e0179338c5e93a78b31ecec8e2cb6ef2.png" alt="logo.png" className='w-14'/>
           <h1 className='font-rancho text-[#331A15] text-3xl'>JohuCoffee</h1>

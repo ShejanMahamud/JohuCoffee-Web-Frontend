@@ -1,16 +1,91 @@
-import React, { useState } from "react";
+import { sendEmailVerification, updateProfile } from "firebase/auth";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { MdOutlineInsertPhoto } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/pagination";
+import auth from "../config/firebase.config";
+import { AuthContext } from "../providers/AuthProvider";
 
 const Register = () => {
 
+const location = useLocation();
 const navigate = useNavigate();
 const [show, setShow] = useState(false);
-
+const {emailPasswordRegister} = useContext(AuthContext)
 const from = location?.state || '/';
+const inputRef = useRef(null)
+
+const handleEmailPasswordRegister = (e) => {
+  e.preventDefault();
+
+  const name = e.target.name.value;
+  const photo = e.target.photo.value;
+  const email = e.target.email.value;
+  const password = e.target.password.value;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).*$/;
+  const terms = e.target.terms.checked;
+
+  if(password.length < 6){
+      toast.error('Password must be 6 characters long!');
+      return;
+  }
+
+  if(!passwordRegex.test(password)){
+      toast.error('Password must be strong!');
+      return;
+  }
+
+  if(!terms){
+      toast.error('Please accept TOC!');
+      return;
+  }
+
+  emailPasswordRegister(email,password)
+  .then(res => {
+    if(res.user){
+      updateProfile(auth.currentUser,{
+        displayName: name,
+        photoURL: photo,
+      })
+      .then(res => {
+        sendEmailVerification(auth.currentUser)
+        .then(res => {
+          fetch('https://johu-coffee-backend.vercel.app/users',{
+            method:'POST',
+            headers:{
+              'content-type':'application/json'
+            },
+            body: JSON.stringify({name:name,email:email,userCreated: auth?.currentUser?.metadata?.creationTime, method:auth?.currentUser?.providerData[0]?.providerId})
+          })
+          .then(res => res.json())
+          .then(data => {
+            if(data.insertedId){
+              toast.success('Successfully Registered!');
+          e.target.reset();
+          setTimeout(()=>{
+            navigate('/')
+          },1000);
+            }
+          })
+        })
+      })
+    }
+  })
+  .catch(error=> {
+    if(error.code === 'auth/email-already-in-use'){
+      toast.error('User already exist!');
+      return;
+  }
+  toast.error('Something went wrong!')
+  })
+}
+
+useEffect(()=>{
+  inputRef.current.focus();
+},[])
 
   return (
     <div className="w-full grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 row-auto items-center gap-10 border-t border-b border-[#CDD6E1]">
@@ -68,11 +143,11 @@ const from = location?.state || '/';
         <img src="https://i.postimg.cc/g2D01RLY/e0179338c5e93a78b31ecec8e2cb6ef2.png" alt="logo.png" />
       </div>
       <h1 className="text-4xl font-bold mb-3 font-rancho">Register to JohuCoffee</h1>
-<form className="flex flex-col items-center justify-center w-full  gap-5" >
+<form onSubmit={handleEmailPasswordRegister} className="flex flex-col items-center justify-center w-full  gap-5" >
 
 <label class="input input-bordered flex items-center gap-2 lg:w-[60%] md:w-[70%] w-[80%] mx-auto">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" /></svg>
-  <input type="text" name='name' class="grow" placeholder="Name" required/>
+  <input type="text" name='name' class="grow" placeholder="Name" required ref={inputRef}/>
 </label>
 
 <label class="input input-bordered flex items-center gap-2 lg:w-[60%] md:w-[70%] w-[80%] mx-auto">
@@ -94,6 +169,10 @@ const from = location?.state || '/';
 </button>
 </div>
 </label>
+<div className='lg:w-[60%] md:w-[70%] w-[80%] mx-auto flex items-center justify-start gap-3'>
+  <input type="checkbox" name="terms" class="checkbox" />
+  <span className='text-gray-500'>Accept our terms and conditions</span>
+  </div>
 <button type="submit" className="lg:w-[60%] md:w-[70%] w-[80%] mx-auto bg-[#E3B577] px-10 py-2 rounded-md text-white font-bold font-raleway">REGISTER</button>
 </form>
 <div className="w-full">

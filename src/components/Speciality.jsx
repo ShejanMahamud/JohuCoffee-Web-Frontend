@@ -2,7 +2,7 @@ import React from 'react'
 
 const Speciality = () => {
   return (
-    <div className='w-full bg-[#ECEAE3] py-10 px-10 grid grid-cols-4 row-auto items-center gap-10'>
+    <div className='w-full bg-[#ECEAE3] py-10 px-10 grid lg:grid-cols-4 grid-cols-1 row-auto items-center gap-10'>
         <div className='px-2 *:mb-2 flex flex-col items-center w-full text-center'>
             <img src="https://i.postimg.cc/NfC1j3kV/dec3cea8873933523ccd43e89f0c3430.png" alt="" />
             <h1 className='text-[#331A15] font-rancho text-3xl'>Awesome Aroma</h1>

@@ -22,10 +22,10 @@ const navigate = useNavigate();
 </svg>
 <span className='text-[#331A15] font-rancho text-2xl'>Back to home</span>
       </div>
-      <div className='w-[70%] my-20 bg-[#F4F3F0] mx-auto rounded-lg py-5 grid grid-cols-2 row-auto items-center gap-5 px-10'>
-        <img src={coffee_photo} alt="coffee.png" className='w-80'/>
-        <div className='w-full flex flex-col items-center gap-3'>
-        <h1 className='text-[#331A15] font-rancho text-4xl text-center'>{coffee_name}</h1>
+      <div className="lg:w-[70%] w-[80%] my-20 bg-[#F4F3F0] bg-[url('https://i.postimg.cc/htCFzSt9/table-bg.png')] bg-no-repeat bg-contain bg-right-top mx-auto rounded-lg py-6 grid lg:grid-cols-2 grid-cols-1 row-auto items-center gap-10 lg:px-10 px-5">
+        <img src={coffee_photo} alt="coffee.png" className='w-96'/>
+        <div className='w-full flex flex-col items-start justify-center gap-3'>
+        <h1 className='text-[#331A15] font-rancho text-4xl'>{coffee_name}</h1>
         <p className='mb-4'>{coffee_details}</p>
         <div className="flex items-start flex-col gap-3 font-raleway">
                 <h1 className="text-[#1B1A1A] font-bold">Name: <span className="text-[#5C5B5B]   font-normal">{coffee_name}</span></h1>

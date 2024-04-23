@@ -24,7 +24,7 @@ const coffee_price = e.target.price.value;
 
 const coffee = {coffee_name,coffee_chef,coffee_supplier,coffee_taste,coffee_category,coffee_details,coffee_photo,coffee_price};
 
-fetch(`http://localhost:5000/coffees/${id}`,{
+fetch(`https://johu-coffee-backend.vercel.app/coffees/${id}`,{
   method: 'PUT',
   headers:{
     'content-type' : 'application/json'
@@ -62,49 +62,49 @@ fetch(`http://localhost:5000/coffees/${id}`,{
         <h1 className='text-[#331A15] font-rancho text-3xl text-center mb-3'>Update {coffee_name}</h1>
         <p className='text-center w-[70%] mx-auto text-[#331A15] font-raleway leading-[26px]'>It is a long established fact that a reader will be distraceted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here.</p>
         <div className='w-[90%] mx-auto my-10 grid grid-cols-2 row-auto items-center gap-x-10 gap-y-5 justify-items-center font-raleway'>
-        <label className="form-control w-full">
+        <label className="form-control w-full lg:col-span-1 col-span-2">
   <div className="label">
     <span className="label-text font-bold text-sm">Coffee Name</span>
   </div>
   <input type="text" name='name' placeholder="Enter Coffee Name" className="input input-bordered w-full" required defaultValue={coffee_name}/>
 </label>
-<label className="form-control w-full">
+<label className="form-control w-full lg:col-span-1 col-span-2">
   <div className="label">
     <span className="label-text font-bold text-sm">Coffee Chef</span>
   </div>
   <input type="text" name='chef' placeholder="Enter Coffee Chef" className="input input-bordered w-full" defaultValue={coffee_chef}/>
 </label>
-<label className="form-control w-full">
+<label className="form-control w-full lg:col-span-1 col-span-2">
   <div className="label">
     <span className="label-text font-bold text-sm">Coffee Supplier</span>
   </div>
   <input type="text" name='supplier' placeholder="Enter Coffee Supplier" className="input input-bordered w-full" defaultValue={coffee_supplier}/>
 </label>
-<label className="form-control w-full">
+<label className="form-control w-full lg:col-span-1 col-span-2">
   <div className="label">
     <span className="label-text font-bold text-sm">Coffee Taste</span>
   </div>
   <input type="text" name='taste' placeholder="Enter Coffee Taste" className="input input-bordered w-full" defaultValue={coffee_taste}/>
 </label>
-<label className="form-control w-full">
+<label className="form-control w-full lg:col-span-1 col-span-2">
   <div className="label">
     <span className="label-text font-bold text-sm">Coffee Category</span>
   </div>
   <input type="text" name='category' placeholder="Enter Coffee Category" className="input input-bordered w-full" required defaultValue={coffee_category}/>
 </label>
-<label className="form-control w-full">
+<label className="form-control w-full lg:col-span-1 col-span-2">
   <div className="label">
     <span className="label-text font-bold text-sm">Coffee Details</span>
   </div>
   <input type="text" name='details' placeholder="Enter Coffee Details" className="input input-bordered w-full" defaultValue={coffee_details}/>
 </label>
-<label className="form-control w-full">
+<label className="form-control w-full lg:col-span-1 col-span-2">
   <div className="label">
     <span className="label-text font-bold text-sm">Coffee Price</span>
   </div>
   <input type="text" name='price' placeholder="Enter Coffee Price" className="input input-bordered w-full" required defaultValue={coffee_price}/>
 </label>
-<label className="form-control w-full">
+<label className="form-control w-full lg:col-span-1 col-span-2">
   <div className="label">
     <span className="label-text font-bold text-sm">Photo URL</span>
   </div>

@@ -1,16 +1,86 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import { FaGoogle, FaTwitter } from "react-icons/fa";
 import { IoEye, IoEyeOff } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/pagination";
+import auth from "../config/firebase.config";
+import { AuthContext } from "../providers/AuthProvider";
 
 const Login = () => {
 
+const location = useLocation();
 const navigate = useNavigate();
 const [show, setShow] = useState(false);
+const inputRef = useRef(null)
 
+const {googleLogin,emailPasswordLogin,logOut} = useContext(AuthContext);
 const from = location?.state || '/';
+
+const handleGoogleLogin = () => {
+googleLogin()
+  .then(res => {
+    if(res.user){
+      fetch('https://johu-coffee-backend.vercel.app/users',{
+        method: 'POST',
+        headers: {
+          'content-type' : 'application/json'
+        },
+        body: JSON.stringify({name: auth?.currentUser?.displayName,email: auth?.currentUser?.email,lastLogin: auth.currentUser.metadata.lastSignInTime,method:auth?.currentUser?.providerData[0]?.providerId})
+      })
+      .then(res => res.json())
+      .then(data => {
+        if(data.insertedId){
+          toast.success('Google Login Successfully!');
+          setTimeout(()=>{
+            navigate(from)
+          },1000);
+          window.scroll(0,0);
+        }
+      })
+    }
+  })
+  .catch(error => {
+    console.log(error)
+    toast.error('Opps! Something Went Wrong...')
+  })
+}
+
+const handleEmailPasswordLogin = (e) => {
+  e.preventDefault();
+
+  const email = e.target.email.value;
+  const password = e.target.password.value;
+
+  emailPasswordLogin(email,password)
+  .then(res => {
+    fetch(`https://johu-coffee-backend.vercel.app/users/${email}`,{
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({lastLogin: auth?.currentUser?.metadata?.lastSignInTime,email})
+    })
+    .then(res => res.json())
+    .then(data => {
+      if(data.modifiedCount > 0){
+        toast.success('Successfully Logged in!');
+        e.target.reset();
+        setTimeout(()=>{
+          navigate(from)
+        },1000);
+        window.scroll(0,0);
+      }
+    })
+  })
+  .catch(error => {
+    toast.error('Something Went Wrong!')
+  })
+}
+useEffect(()=>{
+  inputRef.current.focus();
+},[])
 
   return (
     <div className="w-full grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 row-auto items-center gap-10 border-t border-b border-[#CDD6E1]">
@@ -68,12 +138,12 @@ const from = location?.state || '/';
         <img src="https://i.postimg.cc/g2D01RLY/e0179338c5e93a78b31ecec8e2cb6ef2.png" alt="logo.png" />
       </div>
       <h1 className="text-4xl font-bold mb-3 font-rancho">Login to JohuCoffee</h1>
-<form className="flex flex-col items-center justify-center w-full  gap-5" >
+<form onSubmit={handleEmailPasswordLogin} className="flex flex-col items-center justify-center w-full  gap-5" >
 
 <label className="input input-bordered flex items-center gap-2 lg:w-[60%] md:w-[70%] w-[80%] mx-auto">
   
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" /><path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" /></svg>
-<input type="text" className="grow w-full" name="email" placeholder="Enter your email" required/>
+<input ref={inputRef} type="text" className="grow w-full" name="email" placeholder="Enter your email" required/>
 </label>
 <label className="input input-bordered flex items-center gap-2 lg:w-[60%] md:w-[70%] w-[80%] mx-auto">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path fillRule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clipRule="evenodd" /></svg>
@@ -95,7 +165,7 @@ const from = location?.state || '/';
 <div className="w-[60%] mx-auto flex flex-col items-center gap-2 my-3">
 <div className="flex items-center gap-5">
 <button  className="bg-[#E3B577] rounded-md px-3 py-3 flex items-center gap-3">
-      <FaGoogle className="lg:text-xl text-3xl text-white"/>
+      <FaGoogle onClick={handleGoogleLogin} className="lg:text-xl text-3xl text-white"/>
       </button>
       <button  className="bg-[#E3B577] rounded-md px-3 py-3 flex items-center gap-3">
       <FaTwitter className="lg:text-xl text-3xl text-white"/>
